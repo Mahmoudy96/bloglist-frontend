@@ -1,0 +1,15 @@
+.newBlog {
+  color: green;
+  text-align: center;
+  font-style: italic;
+  font-size:15px;
+}
+
+.error {
+  background-color: #f44336;
+  color: white;
+  text-align: center;
+  font-size:15px;
+  padding: 10px;
+  margin: 0;
+}
