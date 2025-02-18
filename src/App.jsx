@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Toggleable from './components/Toggleable'
+import CreateBlog from './components/CreateBlog'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -10,9 +14,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
-  const [newTitle, setNewTitle] = useState('')
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newUrl, setNewUrl] = useState('')
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -53,24 +55,25 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
   }
 
-  const addBlog = async (event) => {
-    event.preventDefault()
-    const newBlog = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl,
-      likes: 0
-    }
+  const createBlog = (newBlog) => {
     blogService.create(newBlog).then(createdBlog => {
     setBlogs(blogs.concat(createdBlog))
-    setMessage('Added blog ' + newTitle + ' by ' + newAuthor)
+    setMessage('Added blog ' + createdBlog.title + ' by ' + createdBlog.author)
     setTimeout(() => {
       setMessage(null)
     }, 5000)
   })
-
+}
+  const deleteBlog = (id) => {
+    blogService.remove(id).then(() => {
+      setBlogs(blogs.filter(b => b.id !== id))
+    })
   }
-
+  const updateBlog = (blog) => {
+    blogService.update(blog.id, blog).then(updatedBlog => {
+      setBlogs(blogs.map(b => b.id === updatedBlog.id ? updatedBlog : b))
+    })
+  }
   if (user === null) {
     return (
       <div>
@@ -105,40 +108,15 @@ const App = () => {
       <h2>blogs</h2>
       {user.name} logged in
       <button onClick={handleLogout}>logout</button>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+      {blogs.sort((a,b) => b.likes-a.likes).map(blog =>
+        <Blog key={blog.id} blog={blog} user={user} updateBlog={updateBlog} deleteBlog={deleteBlog} />
       )}
-      <h2> create new blog </h2>
-      <form onSubmit={addBlog}>
-        <div>Title:
-          <input
-            type="text"
-            value={newTitle}
-            name="Title"
-            onChange={({ target }) => setNewTitle(target.value)}
-          />
-          </div>
-          <div>
-          Author:
-          <input
-            type="text"
-            value={newAuthor}
-            name="Author"
-            onChange={({ target }) => setNewAuthor(target.value)}
-          />
-          </div>
-          <div>
-          URL:
-          <input
-            type="text"
-            value={newUrl}
-            name="URL"
-            onChange={({ target }) => setNewUrl(target.value)}
-          />
-          </div>
-        <button type="submit">create</button>
+      <Toggleable buttonLabel="new blog">
+        <CreateBlog
+          createBlog={createBlog}
+        />
+        </Toggleable>
 
-      </form>
 
     </div>
   )
