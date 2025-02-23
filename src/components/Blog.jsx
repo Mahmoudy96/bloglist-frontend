@@ -13,22 +13,22 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     }
   }
   return (
-    <div>
+    <li className='blog'>
       {blog.title} {blog.author} <br />
 
       <div style={{ display: visible ? 'none' : '' }}>
         <button onClick={() => setVisible(true)}>view</button>
       </div>
-      <button onClick={() => setVisible(false)}>hide</button>
-      <div style={{ display: visible ? '' : 'none' }}>
+      <div className='hidden content' style={{ display: visible ? '' : 'none' }}>
+        <button onClick={() => setVisible(false)}>hide</button>
         {blog.url} <br />
-        {blog.likes} <button onClick={addLikeToBlog}>like</button> <br />
+        {blog.likes} likes <button onClick={addLikeToBlog}>like</button> <br />
         {blog.user.name} <br />
         <div style={{ display: blog.user.username === user.username ? '' : 'none' }}>
           <button onClick={removeBlog}>DELETE</button>
         </div>
       </div>
-    </div>
+    </li>
   )
 }
 export default Blog
