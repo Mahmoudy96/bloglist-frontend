@@ -22,13 +22,13 @@ const App = () => {
     )
   }, [])
 
-  useEffect(() => {    
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')    
-    if (loggedUserJSON) {      
-      const user = JSON.parse(loggedUserJSON)      
-      setUser(user)      
-      blogService.setToken(user.token)    
-    }  
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
   }, [])
 
   const handleLogin = async (event) => {
@@ -57,13 +57,13 @@ const App = () => {
 
   const createBlog = (newBlog) => {
     blogService.create(newBlog).then(createdBlog => {
-    setBlogs(blogs.concat(createdBlog))
-    setMessage('Added blog ' + createdBlog.title + ' by ' + createdBlog.author)
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-  })
-}
+      setBlogs(blogs.concat(createdBlog))
+      setMessage('Added blog ' + createdBlog.title + ' by ' + createdBlog.author)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    })
+  }
   const deleteBlog = (id) => {
     blogService.remove(id).then(() => {
       setBlogs(blogs.filter(b => b.id !== id))
@@ -77,7 +77,7 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <Notification message={message} messageType="error"/>
+        <Notification message={message} messageType="error" />
         <h2>Log in to application</h2>
         <form onSubmit={handleLogin}>
           <div>
@@ -104,18 +104,18 @@ const App = () => {
   }
   return (
     <div>
-      <Notification message={message} messageType="newBlog"/>
+      <Notification message={message} messageType="newBlog" />
       <h2>blogs</h2>
       {user.name} logged in
       <button onClick={handleLogout}>logout</button>
-      {blogs.sort((a,b) => b.likes-a.likes).map(blog =>
+      {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} blog={blog} user={user} updateBlog={updateBlog} deleteBlog={deleteBlog} />
       )}
       <Toggleable buttonLabel="new blog">
         <CreateBlog
           createBlog={createBlog}
         />
-        </Toggleable>
+      </Toggleable>
 
 
     </div>

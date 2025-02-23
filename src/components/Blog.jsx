@@ -1,5 +1,5 @@
 import { useState } from 'react'
-const Blog = ({ blog, user, updateBlog, deleteBlog}) => {
+const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   const [visible, setVisible] = useState(false)
   const addLikeToBlog = () => {
     updateBlog({
@@ -13,22 +13,22 @@ const Blog = ({ blog, user, updateBlog, deleteBlog}) => {
     }
   }
   return (
-  <div>
-    {blog.title} {blog.author} <br />
+    <div>
+      {blog.title} {blog.author} <br />
 
-    <div style={{ display: visible ? 'none' : '' }}>
-    <button onClick={() => setVisible(true)}>view</button>
+      <div style={{ display: visible ? 'none' : '' }}>
+        <button onClick={() => setVisible(true)}>view</button>
+      </div>
+      <button onClick={() => setVisible(false)}>hide</button>
+      <div style={{ display: visible ? '' : 'none' }}>
+        {blog.url} <br />
+        {blog.likes} <button onClick={addLikeToBlog}>like</button> <br />
+        {blog.user.name} <br />
+        <div style={{ display: blog.user.username === user.username ? '' : 'none' }}>
+          <button onClick={removeBlog}>DELETE</button>
+        </div>
+      </div>
     </div>
-    <button onClick={() => setVisible(false)}>hide</button>
-    <div style={{ display: visible ? '' : 'none' }}>
-    {blog.url} <br />
-    {blog.likes} <button onClick={addLikeToBlog}>like</button> <br />
-    {blog.user.name} <br />
-    <div style={{ display: blog.user.username === user.username ? '' : 'none' }}>
-    <button onClick={removeBlog}>DELETE</button>
-    </div>
-    </div>
-  </div>   
-)
+  )
 }
 export default Blog

@@ -3,8 +3,8 @@ const baseUrl = '/api/blogs'
 
 let token = null
 
-const setToken = newToken => { 
-  token = `Bearer ${newToken}` 
+const setToken = newToken => {
+  token = `Bearer ${newToken}`
 }
 
 const getAll = () => {
@@ -39,4 +39,4 @@ const remove = async (id) => {
 
 }
 
-export default { getAll, create, update,remove, setToken }
+export default { getAll, create, update, remove, setToken }
